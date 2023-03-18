@@ -1,0 +1,16 @@
+---
+- name: apt upgrade
+  ansible.builtin.apt:
+    upgrade: safe
+
+- name: install qemu-guest-agent
+  ansible.builtin.apt:
+    name: qemu-guest-agent
+    state: present
+
+- name: install essential tools for me
+  ansible.builtin.apt:
+    name:
+      - vim
+      - tmux
+    state: present
