@@ -4,3 +4,9 @@
   become: yes
   roles:
     - role: common
+
+- hosts: test
+  roles:
+    - role: artis3n.tailscale
+      vars:
+        tailscale_args: "--netfilter-mode off"
