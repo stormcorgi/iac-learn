@@ -1,0 +1,23 @@
+---
+- name: get latest release version
+  uri:
+    url: https://api.github.com/repos/mastodon/mastodon/releases/latest
+    return_content: true
+  register: mastodon_git
+- debug: msg='latest release version is {{ mastodon_git.json.tag_name }}'
+
+- name: put docker-compose file
+  template:
+    src: docker-compose.j2
+    dest: ./mastodon/docker-compose.yml
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: "0644"
+
+- name: put .env.production file
+  template:
+    src: env.production.j2
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    dest: ./mastodon/.env.production
+    mode: "0644"
