@@ -1,0 +1,6 @@
+---
+- name: install loki docker logdriver plugin
+  community.docker.docker_plugin:
+    plugin_name: grafana/loki-docker-driver
+    state: enable
+    alias: loki
