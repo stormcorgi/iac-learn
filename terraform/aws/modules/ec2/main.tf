@@ -45,7 +45,7 @@ resource "aws_instance" "db" {
   metadata_options {
     http_endpoint               = "enabled"
     http_put_response_hop_limit = 1
-    http_tokens                 = "optional"
+    http_tokens                 = "required"
     instance_metadata_tags      = "disabled"
   }
 
@@ -57,7 +57,7 @@ resource "aws_instance" "db" {
 
   root_block_device {
     delete_on_termination = false
-    encrypted             = false
+    encrypted             = true
     tags = {
       "Name" = "${var.vpc_name}-main"
     }

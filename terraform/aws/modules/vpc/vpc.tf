@@ -12,3 +12,10 @@ resource "aws_vpc" "main" {
     "Name" = var.vpc_name
   }
 }
+
+resource "aws_flow_log" "main" {
+  vpc_id          = aws_vpc.main.id
+  iam_role_arn    = var.flow_log_iam_role_arn
+  log_destination = var.flow_log_log_destination
+  traffic_type    = "ALL"
+}

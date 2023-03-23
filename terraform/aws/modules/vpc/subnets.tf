@@ -6,7 +6,7 @@ resource "aws_subnet" "main-0" {
   enable_resource_name_dns_a_record_on_launch    = false
   enable_resource_name_dns_aaaa_record_on_launch = false
   ipv6_native                                    = false
-  map_public_ip_on_launch                        = true
+  map_public_ip_on_launch                        = false
   private_dns_hostname_type_on_launch            = "ip-name"
   tags = {
     "Name" = "${var.vpc_name}-0"
@@ -25,7 +25,7 @@ resource "aws_subnet" "main-16" {
   enable_resource_name_dns_a_record_on_launch    = false
   enable_resource_name_dns_aaaa_record_on_launch = false
   ipv6_native                                    = false
-  map_public_ip_on_launch                        = true
+  map_public_ip_on_launch                        = false
   private_dns_hostname_type_on_launch            = "ip-name"
   tags = {
     "Name" = "${var.vpc_name}-16"
@@ -44,7 +44,7 @@ resource "aws_subnet" "main-32" {
   enable_resource_name_dns_a_record_on_launch    = false
   enable_resource_name_dns_aaaa_record_on_launch = false
   ipv6_native                                    = false
-  map_public_ip_on_launch                        = true
+  map_public_ip_on_launch                        = false
   private_dns_hostname_type_on_launch            = "ip-name"
   tags = {
     "Name" = "${var.vpc_name}-32"
