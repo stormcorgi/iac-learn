@@ -11,8 +11,18 @@ services:
       test: ['CMD-SHELL', 'wget -q --spider --proxy=off localhost:3000/health || exit 1']
     ports:
       - '0.0.0.0:3000:3000'
+    {% if 'spica' in inventory_hostname %}
+
     volumes:
       - ./public/system:/mastodon/public/system
+      - /var/run/postgresql:/var/run/postgresql
+      - /var/run/redis:/var/run/redis
+    {% else %}
+
+    volumes:
+      - ./public/system:/mastodon/public/system
+    {% endif %}
+
     deploy:
       resources:
         limits:

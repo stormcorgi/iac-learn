@@ -1,9 +1,0 @@
----
-- hosts: all
-  gather_facts: yes
-  become: yes
-  roles:
-    - role: mastodon/download
-    - role: mastodon/update_compose
-    - role: mastodon/restart
-      tags: never

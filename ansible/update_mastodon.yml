@@ -1,0 +1,10 @@
+---
+- name: Update Mastodon Containers
+  hosts: all
+  gather_facts: true
+  become: true
+  roles:
+    - role: mastodon_download
+    - role: mastodon_update_compose
+    - role: mastodon_restart
+      tags: never

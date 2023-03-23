@@ -1,21 +1,25 @@
 ---
-- name: "diskusage of {{ mountname }} : threshold < {{ disk_usage }}"
-  assert:
+# yamllint disable rule:line-length
+- name: "Diskusage assertion: threshold < {{ disk_usage }}"
+  ansible.builtin.assert:
     that: mount.size_available > mount.size_total|float * {{ disk_free }}
     msg: disk space has reached {{ disk_free }} threshold
   vars:
-    mount: "{{ ansible_mounts | selectattr('mount','equalto',mountname) | list | first }}"
+    mount: "{{ ansible_mounts | selectattr('mount', 'equalto', mountname) | list | first }}"
     mountname: "/"
     disk_free: 0.2 # 20% free space required
 
-- name: get latest release version
-  uri:
+- name: Get latest release version
+  ansible.builtin.uri:
     url: https://api.github.com/repos/mastodon/mastodon/releases/latest
     return_content: true
   register: mastodon_git
-- debug: msg='latest release version is {{ mastodon_git.json.tag_name }}'
 
-- name: pull latest docker image (amd64)
+- name: Display version
+  ansible.builtin.debug:
+    msg: "latest release version is {{ mastodon_git.json.tag_name }}"
+
+- name: Pull latest docker image (amd64)
   community.docker.docker_image:
     name: tootsuite/mastodon:{{ mastodon_git.json.tag_name }}
     source: pull
@@ -23,7 +27,7 @@
       platform: amd64
   when: ansible_architecture == "x86_64"
 
-- name: pull latest docker image (arm64)
+- name: Pull latest docker image (arm64)
   community.docker.docker_image:
     name: tootsuite/mastodon:{{ mastodon_git.json.tag_name }}
     source: pull
