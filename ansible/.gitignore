@@ -1,1 +1,4 @@
 env.production
+inventory/mastodon/host_vars/*
+inventory/proxmox/*
+ansible-vault-password
