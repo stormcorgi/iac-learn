@@ -4,7 +4,5 @@
   become: true
   gather_facts: true
   roles:
-    - name: Install Monitoring things
-      role: monitoring
-    - name: Update docker-compose file
-      role: mastodon_update_compose
+    - role: monitoring
+    - role: mastodon_update_compose
