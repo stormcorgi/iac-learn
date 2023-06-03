@@ -7,6 +7,9 @@
   ansible.builtin.apt:
     name: qemu-guest-agent
     state: present
+  tags:
+    - prox-init
+    - never
 
 - name: Install essential tools for me
   ansible.builtin.apt:
