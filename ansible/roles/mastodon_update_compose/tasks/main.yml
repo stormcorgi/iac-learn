@@ -24,3 +24,22 @@
     group: "{{ ansible_user }}"
     dest: ./mastodon/.env.production
     mode: "0644"
+
+- name: Generate Directory /etc/systemd/system/docker.service.d/
+  ansible.builtin.file:
+    path: /etc/systemd/system/docker.service.d/
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Create file /etc/systemd/system/docker.service.d/aws-credentials.conf
+  ansible.builtin.template:
+    src: aws-credentials.conf.j2
+    dest: /etc/systemd/system/docker.service.d/aws-credentials.conf
+    owner: root
+    group: root
+    mode: "0644"
+  notify:
+    - Execute systemd daemon-reload
+    - Restart docker.service with systemd

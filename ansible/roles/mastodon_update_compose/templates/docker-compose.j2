@@ -28,9 +28,13 @@ services:
         limits:
           memory: 512m
     logging:
-      driver: loki
+      driver: awslogs
       options:
-        loki-url: http://100.121.87.79:8888/loki/api/v1/push
+        awslogs-region: ap-northeast-1
+        awslogs-group: "mastoodon-web"
+        awslogs-create-group: "true"
+        tag: '{{inventory_hostname}}-web-{{ mastodon_git.json.tag_name | regex_replace("\.","_") }}'
+
   {% endif %}
   {% if 'streaming' in group_names %}
 
@@ -58,9 +62,12 @@ services:
         limits:
           memory: 256m
     logging:
-      driver: loki
+      driver: awslogs
       options:
-        loki-url: http://100.121.87.79:8888/loki/api/v1/push
+        awslogs-region: ap-northeast-1
+        awslogs-group: "mastoodon-streaming"
+        awslogs-create-group: "true"
+        tag: '{{inventory_hostname}}-streaming-{{ mastodon_git.json.tag_name | regex_replace("\.","_") }}'
   {% endif %}
   {% if 'sidekiq' in group_names %}
     {% if 'vega' in inventory_hostname %}
@@ -72,9 +79,12 @@ services:
     command: bundle exec sidekiq -c 15
     mem_limit: 512M
     logging:
-      driver: loki
+      driver: awslogs
       options:
-        loki-url: http://100.121.87.79:8888/loki/api/v1/push
+        awslogs-region: ap-northeast-1
+        awslogs-group: "mastoodon-sidekiq"
+        awslogs-create-group: "true"
+        tag: '{{inventory_hostname}}-sidekiq-all-{{ mastodon_git.json.tag_name | regex_replace("\.","_") }}'
     {% else %}
 
   sidekiq:
@@ -84,8 +94,11 @@ services:
     command: bundle exec sidekiq -c 15 -q default -q push -q ingress -q pull -q mailers
     mem_limit: 512M
     logging:
-      driver: loki
+      driver: awslogs
       options:
-        loki-url: http://100.121.87.79:8888/loki/api/v1/push
+        awslogs-region: ap-northeast-1
+        awslogs-group: "mastoodon-sidekiq"
+        awslogs-create-group: "true"
+        tag: '{{inventory_hostname}}-sidekiq-{{ mastodon_git.json.tag_name | regex_replace("\.","_") }}'
     {% endif %}
   {% endif %}
