@@ -10,7 +10,7 @@ resource "proxmox_vm_qemu" "github-runner" {
   cipassword = var.github-runner_cipassword
   ipconfig0  = var.github-runner_ipconfig0
   sshkeys    = var.github-runner_sshkeys
-  tags       = "cloud"
+  tags       = "github"
   onboot     = true
 
   disk {
