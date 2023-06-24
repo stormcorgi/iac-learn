@@ -1,0 +1,28 @@
+---
+- name: Make '/home/ubuntu/actions-runner'
+  ansible.builtin.file:
+    path: /home/ubuntu/actions-runner
+    state: directory
+    mode: "0755"
+- name: Download file from url and save into /home/ubuntu/actions-runner
+  ansible.builtin.get_url:
+    url: "{{ runner_url }}"
+    dest: "/home/ubuntu/actions-runner/{{ runner_filename }}"
+    mode: "0644"
+- name: Exec unarchive /home/ubuntu/actions-runner/{{ runner_filename }}
+  ansible.builtin.unarchive:
+    src: "/home/ubuntu/actions-runner/{{ runner_filename }}"
+    dest: /home/ubuntu/actions-runner/
+    remote_src: true
+- name: Execute Command to config(it required to execute by hand...)
+  ansible.builtin.command: /home/ubuntu/actions-runner/config.sh --url {{ repo_url }} --token {{ repo_token }}
+  register: result
+  changed_when: result.rc != 0
+  args:
+    chdir: /home/ubuntu/actions-runner
+- name: Execute Command to run
+  ansible.builtin.command: /home/ubuntu/actions-runner/run.sh
+  register: result
+  changed_when: result.rc != 0
+  args:
+    chdir: /home/ubuntu/actions-runner
