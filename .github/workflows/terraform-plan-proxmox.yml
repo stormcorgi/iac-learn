@@ -35,6 +35,12 @@ jobs:
         id: plan
         run: terraform plan -no-color
         continue-on-error: true
+        env:
+          TF_VAR_proxmox_api_url: ${{ secrets.proxmox_api_url }}
+          TF_VAR_proxmox_api_token_id: ${{ secrets.proxmox_api_token_id }}
+          TF_VAR_proxmox_token: ${{ secrets.proxmox_token }}
+          TF_VAR_github-runner_ciuser: ${{ secrets.ciuser}}
+          TF_VAR_github-runner_cipassword: ${{ secrets.cipassword}}
       - run: echo ${{ steps.plan.outputs.stdout }}
       - run: echo ${{ steps.plan.outputs.stderr }}
       - run: echo ${{ steps.plan.outputs.exitcode }}
