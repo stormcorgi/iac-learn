@@ -1,11 +1,13 @@
-name: terraform-plan-on-proxmox
-run-name: plan when terraform directory changed
+name: terraform-apply-on-proxmox
+run-name: apply when terraform proxmox change merged
 on:
-  push:
+  pull_request:
     branches:
-      - "develop"
+      - main
     paths:
       - terraform/**/*.tf
+    types:
+      - closed
 defaults:
   run:
     working-directory: terraform/proxmox
@@ -33,9 +35,10 @@ jobs:
       - name: terraform init
         id: init
         run: terraform init
-      - name: terraform plan
-        id: plan
-        run: terraform plan -no-color
+
+      - name: terraform apply
+        id: apply
+        run: terraform apply -no-color -auto-approve
         continue-on-error: true
         env:
           TF_VAR_proxmox_api_url: ${{ secrets.proxmox_api_url }}

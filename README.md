@@ -21,3 +21,7 @@ OCI: Oracle Cloud FreeTier
 GCP: Google Cloud Platform Free
 
 AWS: needless to say :)
+
+### develop github actions
+
+act push --secret-file .secret
