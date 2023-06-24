@@ -1,22 +1,22 @@
-resource "proxmox_vm_qemu" "provision-test" {
-  name        = "provision-test"
+resource "proxmox_vm_qemu" "github-runner" {
+  name        = "github-runner"
   target_node = "virt"
   clone       = "cloud-init-ubuntu-22.04"
   cpu         = "kvm64"
   cores       = 2
-  memory      = 8192
+  memory      = 4096
   # iso         = "local:iso/debian-11.5.0-amd64-netinst.iso"
-  ciuser     = var.provision-test_ciuser
-  cipassword = var.provision-test_cipassword
-  ipconfig0  = var.provision-test_ipconfig0
-  sshkeys    = var.provision-test_sshkeys
-  tags       = "k3s"
+  ciuser     = var.github-runner_ciuser
+  cipassword = var.github-runner_cipassword
+  ipconfig0  = var.github-runner_ipconfig0
+  sshkeys    = var.github-runner_sshkeys
+  tags       = "cloud"
   onboot     = true
 
   disk {
     backup             = 0
     cache              = "none"
-    file               = "vm-107-disk-0"
+    file               = "vm-106-disk-0"
     format             = "raw"
     iops               = 0
     iops_max           = 0
@@ -37,9 +37,9 @@ resource "proxmox_vm_qemu" "provision-test" {
     slot               = 0
     ssd                = 0
     size               = "16588M"
-    storage            = "prox-raid"
+    storage            = "prox-stripe"
     type               = "scsi"
-    volume             = "prox-raid:vm-107-disk-0"
+    volume             = "prox-stripe:vm-106-disk-0"
   }
 
   network {
@@ -102,9 +102,9 @@ resource "proxmox_vm_qemu" "k3s-con" {
     size               = "32G"
     slot               = 0
     ssd                = 0
-    storage            = "prox-mirror"
+    storage            = "prox-raid"
     type               = "scsi"
-    volume             = "prox-mirror:vm-105-disk-0"
+    volume             = "prox-raid:vm-105-disk-0"
   }
 
   network {
