@@ -76,8 +76,8 @@ services:
     image: tootsuite/mastodon:{{mastodon_git.json.tag_name}}
     restart: always
     env_file: .env.production
-    command: bundle exec sidekiq -c 15
-    mem_limit: 512M
+    command: bundle exec sidekiq -c 10 -q scheduler -q mailers -q default -q push -q ingress -q pull
+    mem_limit: 768M
     logging:
       driver: awslogs
       options:
