@@ -6,6 +6,11 @@ terraform {
       version = "2.9.11"
     }
   }
+  backend "s3" {
+    bucket = "mot-tfstate"
+    key    = "proxmox/terraform.tfstate"
+    region = "ap-northeast-1"
+  }
 }
 provider "proxmox" {
   pm_api_url          = var.proxmox_api_url
@@ -13,3 +18,4 @@ provider "proxmox" {
   pm_api_token_secret = var.proxmox_token
   pm_tls_insecure     = true
 }
+
