@@ -1,6 +1,6 @@
 ---
 - name: Install Monitoring things
-  hosts: all
+  hosts: mastodon
   become: true
   gather_facts: true
   roles:
