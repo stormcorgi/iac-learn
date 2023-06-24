@@ -1,7 +1,4 @@
-name: terraform-plan
-defaults:
-  run:
-    working-directory: terraform
+name: terraform-plan-on-proxmox
 run-name: plan when terraform directory changed
 on:
   push:
@@ -9,15 +6,30 @@ on:
       - "develop"
     paths:
       - terraform/**/*.tf
+env:
+  tf_actions_working_dir: terraform/proxmox
+defaults:
+  run:
+    working-directory: ${{ env.tf_actions_working_dir }}
+
 jobs:
   plan:
     runs-on: [self-hosted, linux]
     steps:
       - uses: actions/checkout@v3
       - uses: hashicorp/setup-terraform@v2
-      - run: terraform init
-      - id: plan
+
+      - name: terraform fmt
+        id: fmt
+        run: terraform fmt -check
+
+      - name: terraform init
+        id: init
+        run: terraform init
+      - name: terraform plan
+        id: plan
         run: terraform plan -no-color
+        continue-on-error: true
       - run: echo ${{ steps.plan.outputs.stdout }}
       - run: echo ${{ steps.plan.outputs.stderr }}
       - run: echo ${{ steps.plan.outputs.exitcode }}
