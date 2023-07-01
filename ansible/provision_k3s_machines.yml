@@ -8,7 +8,7 @@
     - role: common
     - role: artis3n.tailscale
       vars:
-        tailscale_authkey: "tskey-auth-kwwoBt2CNTRL-vXG74piLsTPHH5hVr7aTUPczCN9p5cq35"
+        tailscale_authkey: "***"
         tailscale_args: "--netfilter-mode off"
       tags:
         - never
