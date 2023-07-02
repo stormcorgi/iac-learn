@@ -24,4 +24,4 @@ AWS: needless to say :)
 
 ### develop github actions
 
-act push --secret-file .secret
+`act push --secret-file .secret`
