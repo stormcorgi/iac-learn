@@ -8,5 +8,5 @@
     - role: mastodon_update_compose
     - role: mastodon_restart
       tags:
-        - mastodon_restart
+        - restart
         - never

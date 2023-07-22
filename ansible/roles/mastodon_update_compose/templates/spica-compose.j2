@@ -1,0 +1,45 @@
+version: '3'
+services:
+  caddy:
+    image: caddy:latest
+    ports:
+      - "443:443"
+      - "80:80"
+    volumes:
+      - ./caddy:/etc/caddy
+    restart: unless-stopped
+    networks:
+      - external_network
+      - internal_network
+  web:
+    image: tootsuite/mastodon:{{mastodon_git.json.tag_name}}
+    restart: always
+    env_file: .env.production
+    container_name: web
+    command: bash -c "rm -f /mastodon/tmp/pids/server.pid; bundle exec rails s -p 3000"
+    healthcheck:
+      test: ['CMD-SHELL', 'wget -q --spider --proxy=off localhost:3000/health || exit 1']
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./public/system:/mastodon/public/system
+      - /var/run/postgresql:/var/run/postgresql
+      - /var/run/redis:/var/run/redis
+    # deploy:
+    #   resources:
+    #     limits:
+    #       memory: 512m
+    logging:
+        driver: awslogs
+        options:
+          awslogs-region: ap-northeast-1
+          awslogs-group: "mastoodon-web"
+          awslogs-create-group: "true"
+          tag: 'spica-web-v4_1_4'
+    networks:
+      - internal_network
+networks:
+  internal_network:
+    external: false
+  external_network:
+    external: true

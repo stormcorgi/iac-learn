@@ -1,0 +1,47 @@
+version: '3'
+services:
+
+  #  web:
+  #    image: tootsuite/mastodon:v4.1.4
+  #    restart: always
+  #    env_file: .env.production
+  #    command: bash -c "rm -f /mastodon/tmp/pids/server.pid; bundle exec rails s -p 3000"
+  #    healthcheck:
+  #      test: ['CMD-SHELL', 'wget -q --spider --proxy=off localhost:3000/health || exit 1']
+  #    ports:
+  #      - '0.0.0.0:3000:3000'
+  #
+  #    volumes:
+  #      - ./public/system:/mastodon/public/system
+  #
+  #        # deploy:
+  #        #   resources:
+  #        #     limits:
+  #        #       memory: 512m
+  #    logging:
+  #      driver: awslogs
+  #      options:
+  #        awslogs-region: ap-northeast-1
+  #        awslogs-group: "mastoodon-web"
+  #        awslogs-create-group: "true"
+  #        tag: 'altair-web-v4_1_4'
+
+
+  streaming:
+    image: tootsuite/mastodon:{{mastodon_git.json.tag_name}}
+    restart: always
+    env_file: .env.production
+    command: node ./streaming
+
+    healthcheck:
+      test: ['CMD-SHELL', 'wget -q --spider --proxy=off localhost:4000/api/v1/streaming/health || exit 1']
+    ports:
+      - '0.0.0.0:4000:4000'
+
+    logging:
+      driver: awslogs
+      options:
+        awslogs-region: ap-northeast-1
+        awslogs-group: "mastoodon-streaming"
+        awslogs-create-group: "true"
+        tag: 'altair-streaming-v4_1_4'

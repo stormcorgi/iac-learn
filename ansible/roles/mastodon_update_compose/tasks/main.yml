@@ -11,7 +11,7 @@
 
 - name: Put docker-compose file
   ansible.builtin.template:
-    src: docker-compose.j2
+    src: "{{inventory_hostname}}-compose.j2"
     dest: ./mastodon/docker-compose.yml
     owner: "{{ ansible_user }}"
     group: "{{ ansible_user }}"
