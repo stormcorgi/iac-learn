@@ -1,9 +1,0 @@
----
-- name: Execute docker-compose down
-  community.docker.docker_compose:
-    project_src: ./mastodon
-    state: absent
-
-- name: Execute docker-compose up
-  community.docker.docker_compose:
-    project_src: ./mastodon

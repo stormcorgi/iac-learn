@@ -1,0 +1,7 @@
+---
+- name: Update Mastodon Containers
+  hosts: spica
+  gather_facts: true
+  become: true
+  roles:
+    - role: mastodon_update_stack
