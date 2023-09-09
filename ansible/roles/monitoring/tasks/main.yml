@@ -1,5 +1,0 @@
----
-- name: Remove datadog-agent package with apt
-  ansible.builtin.package:
-    name: datadog-agent
-    state: absent

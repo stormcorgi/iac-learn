@@ -1,8 +1,0 @@
----
-- name: Install Monitoring things
-  hosts: mastodon
-  become: true
-  gather_facts: true
-  roles:
-    - role: monitoring
-    - role: mastodon_update_compose
