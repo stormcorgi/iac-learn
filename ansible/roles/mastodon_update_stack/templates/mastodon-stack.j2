@@ -28,10 +28,10 @@ services:
     image: redis:7-alpine
     healthcheck:
       test: ['CMD', 'redis-cli', 'ping']
-    # volumes:
-    #   - ./redis:/data
     volumes:
-      - dragonflydata:/data
+      - ./redis:/data
+    # volumes:
+    #   - dragonflydata:/data
     deploy:
       placement:
         constraints:
@@ -117,5 +117,7 @@ services:
         awslogs-stream: mastodon-sidekiq
 
 volumes:
-  dragonflydata:
+  # dragonflydata:
+  #   driver: local
+  redis:
     driver: local
