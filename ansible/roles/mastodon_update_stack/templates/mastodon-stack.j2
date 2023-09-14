@@ -1,37 +1,12 @@
 version: "3"
 services:
-  # dragonfly:
-  #   image: 'docker.dragonflydb.io/dragonflydb/dragonfly'
-  #   ulimits:
-  #     memlock: -1
-  #   ports:
-  #     - "6379:6379"
-  #   # For better performance, consider `host` mode instead `port` to avoid docker NAT.
-  #   # `host` mode is NOT currently supported in Swarm Mode.
-  #   # https://docs.docker.com/compose/compose-file/compose-file-v3/#network_mode
-  #   # network_mode: "host"
-  #   volumes:
-  #     - dragonflydata:/data
-  #   deploy:
-  #     placement:
-  #       constraints:
-  #         - node.hostname == spica
-  #   logging:
-  #     driver: awslogs
-  #     options:
-  #       awslogs-region: ap-northeast-1
-  #       awslogs-group: docker-swarm-log-group
-  #       awslogs-stream: dragonflydb
-
   redis:
     restart: always
     image: redis:7-alpine
     healthcheck:
       test: ['CMD', 'redis-cli', 'ping']
     volumes:
-      - ./redis:/data
-    # volumes:
-    #   - dragonflydata:/data
+      - redis:/data
     deploy:
       placement:
         constraints:
@@ -117,7 +92,5 @@ services:
         awslogs-stream: mastodon-sidekiq
 
 volumes:
-  # dragonflydata:
-  #   driver: local
   redis:
     driver: local
