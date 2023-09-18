@@ -1,14 +1,17 @@
 version: 2.1
 jobs:
-  example-job:
+  zap-baseline:
     docker:
       # - image: cimg/base:stable
       - image: owasp/zap2docker-stable:latest
     steps:
       - checkout
-      - run: echo "Hello, world"
-      - run: ls -R
+      - run: pwd;ls -R
+      - run: mkdir /zap/wrk
+      - run: /zap/zap-baseline.py -t https://mastodon.motcha.tech -w report.md
+      - store_artifacts:
+          path: /zap/wrk/report.md
 workflows:
-  example-workflow:
+  zap:
     jobs:
-      - example-job
+      - zap-baseline
