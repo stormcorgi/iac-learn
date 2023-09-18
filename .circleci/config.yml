@@ -1,6 +1,4 @@
 version: 2.1
-orbs:
-  docker: circleci/docker@2.2.0
 jobs:
   example-job:
     docker:
@@ -8,7 +6,6 @@ jobs:
       - image: owasp/zap2docker-stable:latest
     steps:
       - checkout
-      - docker/install-docker
       - run: echo "Hello, world"
       - run: ls -R
 workflows:
