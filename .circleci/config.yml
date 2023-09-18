@@ -4,12 +4,13 @@ orbs:
 jobs:
   example-job:
     docker:
-      - image: cimg/base:stable
+      # - image: cimg/base:stable
+      - image: owasp/zap2docker-stable:latest
     steps:
       - checkout
       - docker/install-docker
       - run: echo "Hello, world"
-      - run: docker ps
+      - run: ls -R
 workflows:
   example-workflow:
     jobs:
