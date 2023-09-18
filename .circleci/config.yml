@@ -6,7 +6,10 @@ jobs:
     docker:
       - image: cimg/base:stable
     steps:
+      - checkout
       - docker/install-docker
+      - run: echo "Hello, world"
+      - run: docker ps
 workflows:
   example-workflow:
     jobs:
