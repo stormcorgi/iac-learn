@@ -1,4 +1,6 @@
 version: 2.1
+orbs:
+  slack: circleci/slack@4.12.5
 jobs:
   zap-baseline:
     docker:
@@ -11,7 +13,31 @@ jobs:
       - run: /zap/zap-baseline.py -t https://mastodon.motcha.tech -w report.md
       - store_artifacts:
           path: /zap/wrk/report.md
+  notify:
+    docker:
+      - image: owasp/zap2docker-stable:latest
+    steps:
+      - slack/notify:
+          custom: |
+            {
+              "blocks": [
+                {
+                  "type": "section",
+                  "fields": [
+                    {
+                      "type": "plain_text",
+                      "text": "*This is a text notification*",
+                      "emoji": true
+                    }
+                  ]
+                }
+              ]
+            }
+          event: always
+          context: slack-secrets
+
 workflows:
   zap:
     jobs:
       - zap-baseline
+      - notify
