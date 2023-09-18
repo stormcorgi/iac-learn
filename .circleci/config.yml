@@ -15,7 +15,7 @@ jobs:
           path: /zap/wrk/report.md
   notify:
     docker:
-      - image: owasp/zap2docker-stable:latest
+      - image: cimg/base:stable
     steps:
       - slack/notify:
           custom: |
