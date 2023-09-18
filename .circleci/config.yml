@@ -8,16 +8,25 @@ jobs:
       - image: owasp/zap2docker-stable:latest
     steps:
       - checkout
-      - run: pwd;ls -R
       - run: mkdir /zap/wrk
-      - run: /zap/zap-baseline.py -t https://mastodon.motcha.tech  -r report.html -l
+      - run: /zap/zap-baseline.py -t https://mastodon.motcha.tech  -r report.html -I
       - store_artifacts:
-          path: /zap/wrk/report.md
+          path: /zap/wrk/report.html
   notify:
     docker:
       - image: cimg/base:stable
     steps:
-      - run: export TEST="teeest"
+      - run:
+          name: store-artifact-url
+          command: |
+            URL="https://circleci.com/api/v2/project/github/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/$(($CIRCLE_BUILD_NUM - 1))/artifacts"
+            artifacts=$(curl -X GET ${URL} \
+            -H "Accept: application/json" \
+            --header "Circle-Token: $CIRCLE_TOKEN") # APIをたたいてレスポンス値を代入する
+            artifact0=$(echo $artifacts | jq '.items[0].url') # jqコマンドでurlの文字列を取得する
+            echo $artifact0
+            echo $artifacts
+            echo "export ARTIFACT0=$artifact0" >> $BASH_ENV # 環境変数に登録する
       - slack/notify:
           custom: |
             {
@@ -27,7 +36,7 @@ jobs:
                   "fields": [
                     {
                       "type": "plain_text",
-                      "text": "aaa ${TEST}",
+                      "text": "<${ARTIFACT0}>",
                       "emoji": true
                     }
                   ]
@@ -39,8 +48,8 @@ jobs:
 workflows:
   zap:
     jobs:
-      # - zap-baseline
+      - zap-baseline
       - notify:
-          # requires:
-          #   - zap-baseline
+          requires:
+            - zap-baseline
           context: slack-secrets
