@@ -17,6 +17,8 @@ jobs:
     docker:
       - image: cimg/base:stable
     steps:
+      - run: export RESULT="$(cat /zap/wrk/report)"
+      - run: export TEST="teeest"
       - slack/notify:
           custom: |
             {
@@ -26,7 +28,7 @@ jobs:
                   "fields": [
                     {
                       "type": "plain_text",
-                      "text": "*This is a text notification*",
+                      "text": "${RESULT}${TEST}",
                       "emoji": true
                     }
                   ]
@@ -40,4 +42,6 @@ workflows:
     jobs:
       - zap-baseline
       - notify:
+          requires:
+            - zap-baseline
           context: slack-secrets
