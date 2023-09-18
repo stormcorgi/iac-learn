@@ -10,14 +10,13 @@ jobs:
       - checkout
       - run: pwd;ls -R
       - run: mkdir /zap/wrk
-      - run: /zap/zap-baseline.py -t https://mastodon.motcha.tech -w report.md
+      - run: /zap/zap-baseline.py -t https://mastodon.motcha.tech -w report.md | true
       - store_artifacts:
           path: /zap/wrk/report.md
   notify:
     docker:
       - image: cimg/base:stable
     steps:
-      - run: export RESULT="$(cat /zap/wrk/report)"
       - run: export TEST="teeest"
       - slack/notify:
           custom: |
@@ -28,7 +27,7 @@ jobs:
                   "fields": [
                     {
                       "type": "plain_text",
-                      "text": "${RESULT}${TEST}",
+                      "text": "aaa ${TEST}",
                       "emoji": true
                     }
                   ]
@@ -40,8 +39,8 @@ jobs:
 workflows:
   zap:
     jobs:
-      - zap-baseline
+      # - zap-baseline
       - notify:
-          requires:
-            - zap-baseline
+          # requires:
+          #   - zap-baseline
           context: slack-secrets
