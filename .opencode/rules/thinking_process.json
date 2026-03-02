@@ -1,0 +1,8 @@
+{
+  "name": "思考プロセスの日本語化",
+  "description": "このルールは、内部で使用する思考プロセスを日本語で出力するように設定します。",
+  "implementation": {
+    "language": "ja",
+    "internal_language": "ja"
+  }
+}

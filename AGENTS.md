@@ -39,7 +39,7 @@
 | **セキュリティ** | 秘密情報はハードコーディングせず、`var.*` で渡し、Terraform で `sensitive = true` を付与 |
 | **命名** | 短くて説明的な名前を使う。頭字語は業界標準のみ |
 
-## 🔍 Cursor \u0026 Copilot ルール
+## 🔍 Cursor & Copilot ルール
 
 - このリポジトリには **Cursor** または **Copilot** の設定は存在しません。もし `.cursor/rules/` や `.cursorrules/` を後から追加した場合、こちらのガイドラインをオーバーライドします。
 - Copilot を使う場合は、`.github/copilot-instructions.md` を作成して任意の指示を記載できます。エージェントはこれらの指示を優先します。
@@ -83,6 +83,15 @@ jobs:
 | `tflint` | IaC のベストプラクティスチェック |
 | `yamllint` | YAML のフォーマットチェック |
 | `terraform apply -auto-approve` | インフラデプロイ |
+
+## 🛠 ツール仕様
+
+このリポジトリでは、各エージェントが使用できるツールの JSON スキーマを `.opencode/tools` ディレクトリに格納しています。例えば、`question` ツールの仕様は
+
+* パス: `.opencode/tools/question.md`
+* ファイルに記載された JSON 構造を参照してください。
+
+これらの定義はツールの引数検証に利用され、ユーザー入力のバリデーションを簡易に行うためのものです。
 
 --- 
 
