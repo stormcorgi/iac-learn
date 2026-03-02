@@ -1,0 +1,33 @@
+name: terraform-apply-on-aws
+run-name: apply when terraform aws code changed merged
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - terraform/aws/**/*.tf
+    types:
+      - closed
+defaults:
+  run:
+    working-directory: terraform/aws
+jobs:
+  apply:
+    runs-on: [self-hosted, linux]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.aws_access_key_id }}
+          aws-secret-access-key: ${{ secrets.aws_secret_access_key }}
+          aws-region: ap-northeast-1
+      - uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.4.5
+      - name: terraform fmt
+        run: terraform fmt -check
+      - name: terraform init
+        run: terraform init
+      - name: terraform apply
+        run: terraform apply -no-color -auto-approve
+        continue-on-error: true
