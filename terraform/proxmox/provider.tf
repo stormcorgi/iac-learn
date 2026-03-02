@@ -1,16 +1,14 @@
 terraform {
-  required_version = "1.4.5"
+  required_version = "~> 1.14.6"
   required_providers {
     proxmox = {
       source  = "Telmate/proxmox"
       version = "2.9.11"
     }
   }
-  backend "s3" {
-    bucket = "mot-tfstate"
-    key    = "proxmox/terraform.tfstate"
-    region = "ap-northeast-1"
-  }
+  backend "local" {
+  path = "terraform.tfstate"
+}
 }
 provider "proxmox" {
   pm_api_url          = var.proxmox_api_url
